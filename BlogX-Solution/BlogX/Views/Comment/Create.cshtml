@@ -1,0 +1,37 @@
+﻿@model CommentModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+<h4>Add Comment</h4>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="PostId" class="form-control" readonly type="hidden"/>
+           
+            <div class="d-flex">
+                <div class="form-group">
+                    <input asp-for="Content" class="form-control" />
+                    <span asp-validation-for="Content" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary ml-2" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Details" asp-controller="Post" asp-route-id="@ViewData["PostId"]" class="badge bg-secondary text-decoration-none text-light">
+        <i class="fa-solid fa-arrow-left me-1"></i>Back
+    </a>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

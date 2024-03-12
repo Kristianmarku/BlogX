@@ -1,0 +1,106 @@
+﻿@model IEnumerable<PostModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<form method="get" action="@Url.Action("Index")">
+    <div class="mb-4 d-flex justify-content-between">
+        <div class="col-md-4">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search..." aria-label="Search" aria-describedby="basic-addon2" name="search" autocomplete="off">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit">
+                        <i class="fas fa-search fa-sm"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="form-group d-flex">
+            <select name="categoryId" class="form-control">
+                <option value="">All Categories</option>
+                @foreach (var category in (SelectList)ViewData["Categories"])
+                {
+                    <option value="@category.Value">@category.Text</option>
+                }
+            </select>
+            <button type="submit" class="btn btn-primary ml-2">Filter</button>
+        </div>
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Content)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateCreated)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateModified)
+            </th>
+            <th>
+                <div>
+                    <a asp-action="Create" class="btn btn-success btn-sm"><i class="fa-solid fa-plus"></i> New Post</a>
+                </div>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model) {
+                <tr>
+                    <td class="text-center">
+                        @if (!string.IsNullOrEmpty(item.ImageUrl))
+                        {
+                            <img src="@item.ImageUrl" alt="Post Image" style="width: 50px; height: 50px;" class="img-thumbnail" />
+                        }
+                        else
+                        {
+                            <i class="fa-solid fa-image"></i>
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Content)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Category.CategoryName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateCreated)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateModified)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.PostId" class="btn btn-warning btn-sm text-light"><i class="fa-solid fa-pencil"></i></a>
+                        <a asp-action="Details" asp-route-id="@item.PostId" class="btn btn-info btn-sm text-light"><i class="fa-solid fa-eye"></i></a>
+                        <a asp-action="Delete" asp-route-id="@item.PostId" class="btn btn-danger btn-sm text-light"><i class="fa-solid fa-trash"></i></a>
+                    </td>
+                </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Pagination links -->
+<div class="pagination">
+    @if (ViewData["TotalPages"] != null && (int)ViewData["TotalPages"] > 1)
+    {
+        for (int i = 1; i <= (int)ViewData["TotalPages"]; i++)
+        {
+            <a href="@Url.Action("Index", new { page = i, search = ViewData["Search"] })" class="btn btn-sm @(i == (int)ViewData["CurrentPage"] ? "btn-primary" : "btn-light")">@i</a>
+        }
+    }
+</div>

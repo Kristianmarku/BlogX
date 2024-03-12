@@ -1,0 +1,96 @@
+﻿@model PostModel
+@using System.Security.Claims
+
+@{
+    ViewData["Title"] = "Post Details";
+}
+
+<div>
+    <h4>Post Details</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Image
+        </dt>
+        <dd class="col-sm-10 mb-4">
+            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                <img src="@Model.ImageUrl" alt="Post Image" style="max-width: 50%;" />
+            }
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Content)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Content)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CategoryId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Category.CategoryName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UserId)
+        </dt>
+        <dd class = "col-sm-10">
+            @if (Model?.User != null)
+            {
+                @Html.DisplayFor(model => model.User!.FullName)
+            }
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DateCreated)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DateCreated)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DateModified)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DateModified)
+        </dd>
+    </dl>
+</div>
+
+    @if (User.Identity.IsAuthenticated && (User.IsInRole("Admin") || User.Identity.Name == Model.UserId))
+    {
+        <div class="mb-4">
+            <a asp-action="Edit" asp-route-id="@Model?.PostId" class="btn btn-warning">Edit</a>
+            <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">View All</a>
+        </div>
+    }
+
+<h3>Comments</h3>
+@foreach (var comment in Model?.Comments!)
+{
+    <div class="card mb-3">
+        <div class="card-body">
+            @if (comment.User != null)
+            {
+                <h5 class="card-title">@comment.User.FullName</h5>
+            }
+            <p class="card-text">@comment.Content</p>
+
+            <!-- Edit and Delete buttons only for the comment owner -->
+            @if (User.Identity.IsAuthenticated && comment.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier))
+            {
+                <div class="mt-2">
+                    <a asp-action="Edit" asp-controller="Comment" asp-route-id="@comment.CommentId" class="btn btn-warning btn-sm"><i class="fa-solid fa-pencil"></i></a>
+                    <a asp-action="Delete" asp-controller="Comment" asp-route-id="@comment.CommentId" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></a>
+                </div>
+            }
+        </div>
+    </div>
+}
+
+<p>
+    <a asp-action="Create" asp-controller="Comment" asp-route-postId="@Model?.PostId" class="btn btn-success"><i class="fa-solid fa-plus"></i> Add Comment</a>
+</p>

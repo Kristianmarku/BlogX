@@ -1,0 +1,69 @@
+﻿@model IEnumerable<CommentModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<form method="get" action="@Url.Action("Index")">
+    <div class="mb-4 d-flex justify-content-between">
+        <div class="col-md-4">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search..." aria-label="Search" aria-describedby="basic-addon2" name="search" autocomplete="off">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit">
+                        <i class="fas fa-search fa-sm"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.UserId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Content)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Post)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.FullName)
+            </td>
+            <td class="w-25">
+                @Html.DisplayFor(modelItem => item.Content)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Post.Title)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.CommentId" class="btn btn-warning btn-sm text-light"><i class="fa-solid fa-pencil"></i></a>
+                <a asp-action="Details" asp-route-id="@item.CommentId" class="btn btn-info btn-sm text-light"><i class="fa-solid fa-eye"></i></a>
+                <a asp-action="Delete" asp-route-id="@item.CommentId" class="btn btn-danger btn-sm text-light"><i class="fa-solid fa-trash"></i></a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+
+<!-- Pagination links -->
+<div class="pagination">
+    @if (ViewData["TotalPages"] != null && (int)ViewData["TotalPages"] > 1)
+    {
+        for (int i = 1; i <= (int)ViewData["TotalPages"]; i++)
+        {
+            <a href="@Url.Action("Index", new { page = i, search = ViewData["Search"] })" class="btn btn-sm @(i == (int)ViewData["CurrentPage"] ? "btn-primary" : "btn-light")">@i</a>
+        }
+    }
+</div>

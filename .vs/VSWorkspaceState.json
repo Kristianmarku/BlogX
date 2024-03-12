@@ -1,0 +1,17 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\BlogX-Solution",
+    "\\BlogX-Solution\\BlogX",
+    "\\BlogX-Solution\\BlogX\\Areas",
+    "\\BlogX-Solution\\BlogX\\Areas\\Identity",
+    "\\BlogX-Solution\\BlogX\\Areas\\Identity\\Pages",
+    "\\BlogX-Solution\\BlogX\\Controllers",
+    "\\BlogX-Solution\\BlogX\\Data",
+    "\\BlogX-Solution\\BlogX\\Models",
+    "\\BlogX-Solution\\BlogX\\Views",
+    "\\BlogX-Solution\\BlogX\\Views\\Shared"
+  ],
+  "SelectedNode": "\\BlogX-Solution\\BlogX\\Data\\ApplicationDbContext.cs",
+  "PreviewInSolutionExplorer": false
+}
